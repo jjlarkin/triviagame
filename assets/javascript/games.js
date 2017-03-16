@@ -68,7 +68,7 @@ $(document).ready(function() {
         $("#myDIV").toggle();
 
         start()
-    })
+    });
 
 
 
@@ -78,10 +78,10 @@ $(document).ready(function() {
         var selValue2 = $('input[name=question2]:checked').val();
         var selValue3 = $('input[name=question3]:checked').val();
         var selValue4 = $('input[name=question4]:checked').val();
-        console.log(selValue1)
-        console.log(selValue2)
-        console.log(selValue3)
-        console.log(selValue4)
+        console.log(selValue1);
+        console.log(selValue2);
+        console.log(selValue3);
+        console.log(selValue4);
 
         if (selValue1 === "3") {
             correctAns++;
@@ -112,9 +112,16 @@ $(document).ready(function() {
 
 
 
-    $("#reset").click(function(event){
+    $("#reset").click(function reset() {
 
-        reset();
+        correctAns = 0;
+        incorrectAns = 0;
+        time = 90;
+        clearInterval(intervalId);
+        $("#display").html("00:00");
+        $(".correct").html("Correct:" + "0");
+        $(".incorrect").html("Incorrect:" + "0");
+        $("#myDIV").hide();
     });
 
 
@@ -128,23 +135,6 @@ $(document).ready(function() {
 
         // DONE: Use setInterval to start the count here.
         intervalId = setInterval(count, 1000);
-    }
-
-
-
-
-
-
-    function reset() {
-
-        correctAns = 0;
-        incorrectAns = 0;
-        time=90;
-        clearInterval(intervalId)
-        $("#display").html("00:00")
-        $(".correct").html("Correct:"+"0")
-        $(".incorrect").html("Incorrect:"+"0")
-        start()
     }
 
     function timeConverter(t) {
