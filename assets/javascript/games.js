@@ -43,11 +43,11 @@
  */
 
 
-var timer = 30;
 
-var questionCounter = 0;
+
+var intervalId
 var selecterAnswer;
-var theClock;
+var time=90;
 var correctAns = 0;
 var incorrectAns = 0;
 
@@ -56,77 +56,113 @@ var incorrectAns = 0;
 
 
 
-function myFunction() {
-    var x = document.getElementById('myDIV');
-    if (x.style.display === 'none') {
-        x.style.display = 'block';
-    } else {
-        x.style.display = 'none';
-    }
-}
+
 
 
 $(document).ready(function() {
 
+
+
+    $("#myDIV").hide();
+    $("#begin").click(function(){
+        $("#myDIV").toggle();
+
+        start()
+    })
+
+
+
+
     $('#btnGetValue').click(function() {
-        var selValue = $('input[name=rbnNumber]:checked').val();
-        $('p').html('<br/>Selected Radio Button Value is : <b>' + selValue + '</b>');
+        var selValue1 = $('input[name=question1]:checked').val();
+        var selValue2 = $('input[name=question2]:checked').val();
+        var selValue3 = $('input[name=question3]:checked').val();
+        var selValue4 = $('input[name=question4]:checked').val();
+        console.log(selValue1)
+        console.log(selValue2)
+        console.log(selValue3)
+        console.log(selValue4)
+
+        if (selValue1 === "3") {
+            correctAns++;
+        } else{
+            incorrectAns++;
+        }
+        if (selValue2==="2"){
+            correctAns++;
+        }else {
+            incorrectAns++;
+        }
+        if (selValue3==="1"){
+            correctAns++;
+        }else {
+            incorrectAns++;
+        }
+        if (selValue4==="3"){
+            correctAns++;
+        }else {
+            incorrectAns++;
+        }
+
+        $('.correct').html("Correct:"+correctAns+"");
+        $('.incorrect').html("Incorrect:"+incorrectAns+"");
+
     });
 
-    myFunction()
 
 
 
+    $("#reset").click(function(event){
 
-
-
-    $("body").on("click", ".reset-button", function(event){
-
-        resetGame();
-    }); // Closes reset-button click
-
-
-
-
-    function timer() {
-        theClock = setInterval(thirtySeconds, 1000);
-        function thirtySeconds() {
-            if (counter === 0) {
-                clearInterval(theClock);
-                generateLossDueToTimeOut();
-            }
-            if (counter > 0) {
-                counter--;
-            }
-            $(".timer").html(counter);
-        }
-    }
-
-    function win()
-    {
-        alert("You won!");
-        wins++;
-        $('#wins').html(wins);
         reset();
+    });
+
+
+    function count() {
+        var converted = timeConverter(time);
+        time--;
+        $("#display").html(converted);
     }
 
-    function lose()
-    {
-        alert ("You lose!");
-        losses++;
-        $('#losses').html(losses);
-        reset()
+    function start() {
+
+        // DONE: Use setInterval to start the count here.
+        intervalId = setInterval(count, 1000);
     }
 
 
-    function resetGame() {
-        questionCounter = 0;
-        correctTally = 0;
-        incorrectTally = 0;
-        unansweredTally = 0;
-        counter = 30;
-        generateHTML();
-        timer();
+
+
+
+
+    function reset() {
+
+        correctAns = 0;
+        incorrectAns = 0;
+        time=90;
+        clearInterval(intervalId)
+        $("#display").html("00:00")
+        $(".correct").html("Correct:"+"0")
+        $(".incorrect").html("Incorrect:"+"0")
+        start()
     }
 
+    function timeConverter(t) {
+
+        var minutes = Math.floor(t / 60);
+        var seconds = t - (minutes * 60);
+
+        if (seconds < 10) {
+            seconds = "0" + seconds;
+        }
+
+        if (minutes === 0) {
+            minutes = "00";
+        }
+        else if (minutes < 10) {
+            minutes = "0" + minutes;
+        }
+
+        return minutes + ":" + seconds;
+    }
 })
